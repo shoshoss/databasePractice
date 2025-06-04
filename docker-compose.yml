@@ -1,0 +1,30 @@
+services:
+  mysql:
+    build:
+      context: .
+      dockerfile: ./mysql/Dockerfile
+    platform: linux/x86_64
+    volumes:
+      - ./mysql/my_data:/var/lib/mysql
+      - ./mysql/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      - MYSQL_ROOT_PASSWORD=pass
+      - TZ=Asia/Tokyo
+    tty: true
+    restart: always
+    ports:
+      - 3306:3306
+  postgresql:
+    image: bitnami/postgresql:17.2.0
+    platform: linux/x86_64
+    volumes:
+      - ./postgresql/pg_data:/var/lib/postgresql/data
+      - ./postgresql/initdb.d:/docker-entrypoint-initdb.d
+    environment:
+      POSTGRES_DB: world
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    tty: true
+    restart: always
+    ports:
+      - 5432:5432
